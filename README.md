@@ -12,7 +12,10 @@ Some aspects are still difficult for the coding agent to gauge, such as playback
 
 A C++ NES Emulator using SDL2. This project implements the core components of the Nintendo Entertainment System, including the CPU (6502), PPU (2C02), and APU (Audio), providing a playable experience for NROM (Mapper 0) games like *Super Mario Bros*.
 
-<img width="798" height="778" alt="Screenshot 2025-11-19 at 1 47 41 AM" src="https://github.com/user-attachments/assets/d4323412-f01d-44ea-bce5-8f24f96257f3" />
+<img width="798" height="778" alt="Super Mario Bros" src="https://github.com/user-attachments/assets/d4323412-f01d-44ea-bce5-8f24f96257f3" />
+
+### CPU Registers Debug
+<img width="366" height="212" alt="Emulator CPU Debug" src="https://github.com/user-attachments/assets/f13b71c9-fdb3-489c-82e5-d21f2f0319bb" />
 
 
 ## Features
