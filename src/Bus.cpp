@@ -9,6 +9,7 @@ Bus::Bus() {
     // Connect devices
     cpu = std::make_shared<CPU>();
     ppu = std::make_shared<PPU>();
+    apu = std::make_shared<APU>();
     
     cpu->ConnectBus(this);
 }
@@ -27,18 +28,30 @@ void Bus::write(uint16_t addr, uint8_t data) {
     else if (addr >= 0x2000 && addr <= 0x3FFF) {
         ppu->cpuWrite(addr & 0x0007, data);
     }
-    else if (addr == 0x4014) {
-        // DMA Transfer (Simple Implementation)
-        uint8_t dma_page = data;
-        uint16_t dma_addr = (uint16_t)dma_page << 8;
-        
-        ppu->setOAMAddress(0x00);
-        for (uint16_t i = 0; i < 256; i++) {
-            ppu->writeOAMData(read(dma_addr + i));
+    else if (addr >= 0x4000 && addr <= 0x4017) {
+        // APU Registers (excluding 4014 DMA and 4016/4017 controller which overlap)
+        if (addr == 0x4014) {
+             // DMA
+            uint8_t dma_page = data;
+            uint16_t dma_addr = (uint16_t)dma_page << 8;
+            
+            ppu->setOAMAddress(0x00);
+            for (uint16_t i = 0; i < 256; i++) {
+                ppu->writeOAMData(read(dma_addr + i));
+            }
+        } 
+        else if (addr == 0x4016 || addr == 0x4017) {
+             // Controller & APU Frame Counter (4017)
+             // 4017 is BOTH Controller 2 Write AND APU Frame Counter
+             if (addr == 0x4016) controller_state[0] = controller[0];
+             if (addr == 0x4017) {
+                 controller_state[1] = controller[1]; // Usually unused
+                 apu->cpuWrite(addr, data); // Frame Counter
+             }
         }
-    }
-    else if (addr >= 0x4016 && addr <= 0x4017) {
-        controller_state[addr & 0x0001] = controller[addr & 0x0001];
+        else {
+             apu->cpuWrite(addr, data);
+        }
     }
     // Controller I/O ...
 }
@@ -55,6 +68,9 @@ uint8_t Bus::read(uint16_t addr, bool bReadOnly) {
     }
     else if (addr >= 0x2000 && addr <= 0x3FFF) {
         data = ppu->cpuRead(addr & 0x0007, bReadOnly);
+    }
+    else if (addr >= 0x4000 && addr <= 0x4015) {
+        data = apu->cpuRead(addr);
     }
     else if (addr >= 0x4016 && addr <= 0x4017) {
         data = (controller_state[addr & 0x0001] & 0x80) > 0;
@@ -76,8 +92,10 @@ void Bus::reset() {
 
 void Bus::clock() {
     ppu->clock();
+    
     if (nSystemClockCounter % 3 == 0) {
         cpu->clock();
+        apu->clock();
     }
     
     if (ppu->nmi) {

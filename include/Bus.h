@@ -4,6 +4,7 @@
 #include <memory>
 #include "Cartridge.h"
 #include "PPU.h"
+#include "APU.h"
 
 class CPU; // Forward declaration
 
@@ -15,6 +16,7 @@ public:
     // Devices on the bus
     std::shared_ptr<CPU> cpu;
     std::shared_ptr<PPU> ppu;
+    std::shared_ptr<APU> apu;
     std::shared_ptr<Cartridge> cart;
     
     // 2KB System RAM
