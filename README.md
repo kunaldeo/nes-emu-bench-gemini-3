@@ -1,6 +1,13 @@
+Gemini 3 has been released, and I couldn't wait to run my own benchmark on it. I lovingly call it nes-emu-bench. The task of this benchmark is for a coding agent to implement a NES emulator (my favorite Nintendo Gaming Console) which is cycle-accurate-ish and has accurate-ish sound when playing Super Mario Bros. The goal is for a normal human being to find it fun to play. The previous champion of this benchmark was Claude 4.5 with claude-code, which took 4 hours and multiple prompts. Gemini 3 with gemini-cli broke the record in just ~50 minutes, producing a much better emulator with little guidance. See the results at: https://github.com/kunaldeo/nes-emu-bench-gemini-3
+
+### More on the benchmark:
+The benchmark includes NES Hardware Specs (https://d1.amobbs.com/bbs_upload782111/files_28/ourdev_551332.pdf) for the coding agent to refer. A Super Mario ROM is provided for the coding agent to check its work against.
+The prompt includes instructions that the coding agent should build debugging tools such as taking screenshots from the running emulator and printing CPU/PPU register states. This allows the coding agent to run autonomously as it works towards building the emulator and saves me from providing screenshots and other debug data manually.
+Some aspects are still difficult for the coding agent to gauge, such as playback speed and sound accuracy, so these were provided manually.
+
 # NES Emulator
 
-A C++ NES Emulator using SDL2. This project implements the core components of the Nintendo Entertainment System, including the CPU (6502), PPU (2C02), and APU (Audio), providing a playable experience for NROM (Mapper 0) games like *Super Mario Bros.*
+A C++ NES Emulator using SDL2. This project implements the core components of the Nintendo Entertainment System, including the CPU (6502), PPU (2C02), and APU (Audio), providing a playable experience for NROM (Mapper 0) games like *Super Mario Bros*.
 
 ## Features
 - **CPU**: Cycle-accurate Ricoh 2A03 (MOS 6502 variant) emulation.
