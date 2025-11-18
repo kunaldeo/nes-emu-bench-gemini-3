@@ -5,9 +5,15 @@ The benchmark includes NES Hardware Specs (https://d1.amobbs.com/bbs_upload78211
 The prompt includes instructions that the coding agent should build debugging tools such as taking screenshots from the running emulator and printing CPU/PPU register states. This allows the coding agent to run autonomously as it works towards building the emulator and saves me from providing screenshots and other debug data manually.
 Some aspects are still difficult for the coding agent to gauge, such as playback speed and sound accuracy, so these were provided manually.
 
+<img width="805" height="448" alt="Gemini 3 gemini-cli" src="https://github.com/user-attachments/assets/97a6cc71-5835-49a8-b279-4655e0320251" />
+
+
 # NES Emulator
 
 A C++ NES Emulator using SDL2. This project implements the core components of the Nintendo Entertainment System, including the CPU (6502), PPU (2C02), and APU (Audio), providing a playable experience for NROM (Mapper 0) games like *Super Mario Bros*.
+
+<img width="798" height="778" alt="Screenshot 2025-11-19 at 1 47 41 AM" src="https://github.com/user-attachments/assets/d4323412-f01d-44ea-bce5-8f24f96257f3" />
+
 
 ## Features
 - **CPU**: Cycle-accurate Ricoh 2A03 (MOS 6502 variant) emulation.
