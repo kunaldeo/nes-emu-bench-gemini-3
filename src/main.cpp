@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <SDL.h>
 #include <memory>
 #include <vector>
@@ -87,6 +88,15 @@ int main(int argc, char* argv[]) {
         nes.controller[0] |= state[SDL_SCANCODE_DOWN] ? 0x04 : 0x00;
         nes.controller[0] |= state[SDL_SCANCODE_LEFT] ? 0x02 : 0x00;
         nes.controller[0] |= state[SDL_SCANCODE_RIGHT] ? 0x01 : 0x00;
+
+        if (debug) {
+             std::cout << "PC: " << std::hex << std::uppercase << std::setw(4) << std::setfill('0') << nes.cpu->pc
+                       << ", A: " << std::setw(2) << (int)nes.cpu->a
+                       << ", X: " << std::setw(2) << (int)nes.cpu->x
+                       << ", Y: " << std::setw(2) << (int)nes.cpu->y
+                       << ", Status: " << std::setw(2) << (int)nes.cpu->status
+                       << std::dec << std::endl;
+        }
 
         // Emulation Step
         for (int i = 0; i < 89342; i++) { // PPU Cycles per frame
